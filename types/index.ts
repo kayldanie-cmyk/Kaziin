@@ -188,7 +188,7 @@ export interface User {
   createdAt: string;
 }
 
-export interface Skill {
+export interface CandidateSkill {
   id: string;
   name: string;
   verified: boolean;
@@ -321,7 +321,7 @@ export interface CareerProfile {
   userId: string;
   headline: string;
   summary?: string;
-  skills: Skill[];
+  skills: CandidateSkill[];
   experience: Experience[];
   education: Education[];
   certifications: Certification[];

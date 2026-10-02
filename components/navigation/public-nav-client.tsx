@@ -138,21 +138,12 @@ export function PublicNavClient({ sessionUser }: { sessionUser: SessionUser | nu
             })}
           </nav>
 
-          {/* Desktop auth */}
+          {/* Desktop auth — only show Dashboard if logged in; Login/Get Started live in the hero */}
           <div className="hidden lg:flex items-center gap-2">
-            {sessionUser ? (
+            {sessionUser && (
               <Link href={dashboardHref} className={buttonVariants()}>
                 Dashboard
               </Link>
-            ) : (
-              <>
-                <Link href="/auth/signin" className={buttonVariants({ variant: "ghost" })}>
-                  Log in
-                </Link>
-                <Link href="/auth/signup" className={buttonVariants()}>
-                  Get started
-                </Link>
-              </>
             )}
           </div>
 
