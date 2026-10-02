@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ============================================================
+   KAZIIN — Global Design Tokens
+   ============================================================ */
+
+@theme {
+  --color-ink: #000000;
+  --color-ink-soft: #000000;
+  --color-paper: #E3ECE6;
+  --color-accent: #2F6D53;
+  --color-accent-dark: #2F6D53;
+  --color-accent-soft: #E3ECE6;
+  --color-line: #A6C4B4;
+  --color-gold: #B8863B;
+  --color-gold-soft: #F3E7D3;
+  --color-danger: #A24B3F;
+  --color-danger-soft: #F1DEDA;
+  --color-muted-label: #000000;
+  --color-muted-label-soft: #000000;
+
+  --color-dark-bg: #15171B;
+  --color-dark-card: #1B1E23;
+  --color-dark-border: #2C2F35;
+  --color-dark-muted: #9BA0A8;
+  --color-dark-accent: #8FCBAE;
+  --color-dark-accent-bg: #25302B;
+  --color-dark-label: #B7BBC1;
+  --color-dark-rule: #3A3E45;
+
+  --font-display: var(--font-bolt), ui-sans-serif, system-ui, sans-serif;
+  --font-bolt: var(--font-bolt), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-bolt), ui-sans-serif, system-ui, sans-serif;
+  --font-data: var(--font-bolt), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  --spacing-sp-1: 4px;
+  --spacing-sp-2: 8px;
+  --spacing-sp-3: 16px;
+  --spacing-sp-4: 24px;
+  --spacing-sp-5: 32px;
+  --spacing-sp-6: 48px;
+  --spacing-sp-7: 64px;
+  --spacing-sp-8: 96px;
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+}
+
+:root {
+  --max-w: 1360px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 500ms;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--color-accent);
+}
+
+.wrap {
+  max-width: var(--max-w);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+@media (min-width: 768px) {
+  .wrap { padding-left: 40px; padding-right: 40px; }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+::selection, *::selection {
+  background-color: var(--color-accent-soft);
+  color: var(--color-ink);
+}
+
+@layer base {
+  a { color: var(--color-accent); }
+  select { accent-color: var(--color-accent); }
+  select:focus, select:focus-visible, input:focus, input:focus-visible, textarea:focus, textarea:focus-visible {
+    border-color: var(--color-accent) !important;
+    --tw-ring-color: rgba(47, 109, 83, 0.4) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(47, 109, 83, 0.2) !important;
+  }
+  * { accent-color: var(--color-accent); }
+}
+
+@media screen and (max-width: 768px) {
+  input, textarea, select { font-size: 16px !important; }
+}
+
+@media screen and (max-width: 768px) {
+  button, [role="button"] { min-height: 44px; }
+}
+
+.admin-nav-scrollbar::-webkit-scrollbar { width: 6px; }
+.admin-nav-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.admin-nav-scrollbar::-webkit-scrollbar-thumb { background-color: var(--color-accent); border-radius: 10px; }
+.admin-nav-scrollbar { scrollbar-width: thin; scrollbar-color: var(--color-accent) transparent; }
