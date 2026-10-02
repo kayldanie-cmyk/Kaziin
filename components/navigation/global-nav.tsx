@@ -1,0 +1,208 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { Logo } from "@/components/ui/logo";
+import { createPortal } from "react-dom";
+
+interface SessionUser {
+  name: string;
+  role: string;
+}
+
+const GLOBAL_NAV = [
+  { label: "Overview", href: "/career-support" },
+  { label: "My Career Plan", href: "/career-support/plan" },
+  { label: "Apply for Career Support", href: "/career-support/apply" },
+  { label: "Applications", href: "/career-support/applications" },
+  { label: "Documents", href: "/global-dashboard/documents" },
+  { label: "Messages", href: "/global-dashboard/messages" },
+] as const;
+
+export function GlobalNav({ sessionUser }: { sessionUser: SessionUser | null }) {
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const userName = sessionUser?.name || "Account";
+  const isSignedIn = Boolean(sessionUser);
+  const initials = userName
+    .split(" ")
+    .map((name) => name[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase();
+
+  useEffect(() => { setMounted(true); }, []);
+
+  // Close on route change
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
+
+  // Lock body scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  async function handleSignOut() {
+    const { createClient } = await import("@/lib/supabase/client");
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  }
+
+  // Full-screen mobile menu via portal
+  const mobileMenu = mobileOpen && mounted && createPortal(
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-paper">
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-4 border-b border-line shrink-0">
+        <Link href="/career-support" onClick={() => setMobileOpen(false)}>
+          <Logo size={18} />
+        </Link>
+        <button
+          type="button"
+          onClick={() => setMobileOpen(false)}
+          className="p-2 cursor-pointer"
+          aria-label="Close menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a2e24" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      {/* User chip */}
+      <div className="px-5 pt-5 pb-2">
+        <div className="flex items-center gap-3 p-3 rounded-[12px] bg-accent-soft/40 border border-line">
+          <div className="w-10 h-10 rounded-full bg-[#2F6D53] flex items-center justify-center font-display font-bold text-[14px] text-white shrink-0">
+            {initials}
+          </div>
+          <div>
+            <p className="font-semibold text-[14px] text-[#2F6D53]">{userName}</p>
+            <p className="text-[12px] text-[#2F6D53]/80">Career Support</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Nav links */}
+      <div className="flex-1 overflow-y-auto px-5 py-3">
+        <nav className="flex flex-col gap-1">
+          {GLOBAL_NAV.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/career-support" && pathname.startsWith(item.href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={`flex items-center px-4 py-3.5 rounded-[10px] text-[16px] font-semibold transition-colors ${
+                  isActive
+                    ? "bg-[#2F6D53] text-white"
+                    : "text-[#2F6D53] hover:bg-[#2F6D53]/10"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Bottom actions */}
+      <div className="px-5 pb-8 pt-3 border-t border-line shrink-0">
+        {isSignedIn && (
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="w-full flex items-center justify-center px-4 py-3 rounded-[10px] border border-line text-[15px] font-semibold text-ink hover:text-[#A24B3F] hover:border-[#A24B3F]/30 transition-colors"
+          >
+            Sign out
+          </button>
+        )}
+      </div>
+    </div>,
+    document.body
+  );
+
+  return (
+    <>
+      {/* ── Desktop sidebar ── */}
+      <aside className="hidden lg:flex flex-col gap-sp-6 border-r border-line p-sp-5 px-sp-4 sticky top-0 h-screen">
+        <div>
+          <Link href="/career-support" aria-label="Kaziin home">
+            <Logo size={20} />
+          </Link>
+        </div>
+
+        <nav className="flex flex-col gap-0.5" aria-label="Dashboard navigation">
+          {GLOBAL_NAV.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/career-support" && pathname.startsWith(item.href));
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14.5px] font-bold transition-colors ${
+                  isActive
+                    ? "bg-[#2F6D53] text-white"
+                    : "text-[#2F6D53] hover:bg-[#2F6D53]/10"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="mt-auto space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-[13px] text-[#2F6D53]">
+              <div className="w-6 h-6 rounded-full border border-accent bg-[#2F6D53]/10 flex items-center justify-center font-display font-bold text-[10px] text-[#2F6D53]">
+                {initials}
+              </div>
+              <span className="font-medium truncate">{userName}</span>
+            </div>
+            {isSignedIn && (
+              <button
+                type="button"
+                onClick={handleSignOut}
+                className="ml-2 font-data text-[12.5px] text-[#2F6D53] hover:text-[#A24B3F] transition-colors shrink-0 cursor-pointer"
+              >
+                Sign out
+              </button>
+            )}
+          </div>
+        </div>
+      </aside>
+
+      {/* ── Mobile topbar ── */}
+      <div className="lg:hidden sticky top-0 z-40 bg-paper border-b border-line">
+        <div className="flex items-center justify-between px-5 py-3">
+          <Link href="/career-support" aria-label="Kaziin home">
+            <Logo size={18} />
+          </Link>
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full border border-accent bg-accent-soft flex items-center justify-center font-display font-bold text-[12px] text-accent-dark">
+              {initials}
+            </div>
+            <button
+              type="button"
+              className="flex flex-col gap-[5px] p-2 -mr-2 cursor-pointer"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
+            >
+              <span className="block w-5 h-[2px] bg-[#2F6D53] rounded-full" />
+              <span className="block w-5 h-[2px] bg-[#2F6D53] rounded-full" />
+              <span className="block w-5 h-[2px] bg-[#2F6D53] rounded-full" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {mobileMenu}
+    </>
+  );
+}

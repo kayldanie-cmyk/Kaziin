@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/* ============================================================
+   KAZIIN — Global Design Tokens
+   Extracted from the HTML prototypes.
+   All spacing, color, and type decisions centralized here.
+   ============================================================ */
+
+@theme {
+  /* ---- Color Palette ---- */
+  --color-ink: #000000;
+  --color-ink-soft: #000000;
+  --color-paper: #E3ECE6;
+  --color-accent: #2F6D53;
+  --color-accent-dark: #2F6D53;
+  --color-accent-soft: #E3ECE6;
+  --color-line: #A6C4B4; /* Soft green */
+  --color-gold: #B8863B;
+  --color-gold-soft: #F3E7D3;
+  --color-danger: #A24B3F;
+  --color-danger-soft: #F1DEDA;
+  --color-muted-label: #000000;
+  --color-muted-label-soft: #000000;
+
+  /* Dark-section palette */
+  --color-dark-bg: #15171B;
+  --color-dark-card: #1B1E23;
+  --color-dark-border: #2C2F35;
+  --color-dark-muted: #9BA0A8;
+  --color-dark-accent: #8FCBAE;
+  --color-dark-accent-bg: #25302B;
+  --color-dark-label: #B7BBC1;
+  --color-dark-rule: #3A3E45;
+
+  /* ---- Typography ----
+     next/font injects CSS variables (--font-display, --font-body, --font-data)
+     via variable option on html element classnames.
+     The font stacks below serve as fallbacks.
+     ---- */
+  --font-display: var(--font-bolt), ui-sans-serif, system-ui, sans-serif;
+  --font-bolt: var(--font-bolt), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-bolt), ui-sans-serif, system-ui, sans-serif;
+  --font-data: var(--font-bolt), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --spacing-sp-1: 4px;
+  --spacing-sp-2: 8px;
+  --spacing-sp-3: 16px;
+  --spacing-sp-4: 24px;
+  --spacing-sp-5: 32px;
+  --spacing-sp-6: 48px;
+  --spacing-sp-7: 64px;
+  --spacing-sp-8: 96px;
+
+  /* ---- Layout ---- */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+}
+
+/* ============================================================
+   CSS Custom Properties (for use in arbitrary values & JS)
+   ============================================================ */
+:root {
+  --max-w: 1360px;
+
+  /* Transition defaults */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 500ms;
+}
+
+/* ============================================================
+   Base Resets & Defaults
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* NOTE: Do NOT set overflow-x: hidden here — on iOS Safari this prevents
+     touch events from registering on elements near the viewport edge when
+     the virtual keyboard is open (e.g. the Sign In button). The overflow
+     is handled at the html level above. */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--color-accent);
+}
+
+/* Accent-colored headings use tighter tracking */
+h1.text-accent, h2.text-accent, h3.text-accent, h4.text-accent, h5.text-accent, h6.text-accent,
+h1.text-accent-dark, h2.text-accent-dark, h3.text-accent-dark, h4.text-accent-dark, h5.text-accent-dark, h6.text-accent-dark,
+h1.text-\[\#2F6D53\], h2.text-\[\#2F6D53\], h3.text-\[\#2F6D53\], h4.text-\[\#2F6D53\], h5.text-\[\#2F6D53\], h6.text-\[\#2F6D53\],
+.text-accent.font-display, .text-accent-dark.font-display, .text-\[\#2F6D53\].font-display {
+  font-family: var(--font-bolt);
+  letter-spacing: -0.02em;
+}
+
+/* Allow overrides — ink headings e.g. on dark bgs */
+h1.text-ink, h2.text-ink, h3.text-ink, h4.text-ink, h5.text-ink, h6.text-ink,
+h1.text-white, h2.text-white, h3.text-white, h4.text-white, h5.text-white, h6.text-white,
+h1.text-paper, h2.text-paper, h3.text-paper, h4.text-paper, h5.text-paper, h6.text-paper {
+  color: inherit;
+}
+
+/* ============================================================
+   Utility: Container
+   ============================================================ */
+.wrap {
+  max-width: var(--max-w);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+@media (min-width: 768px) {
+  .wrap {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+/* ============================================================
+   Focus Ring (global)
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Selection
+   ============================================================ */
+::selection {
+  background-color: var(--color-accent-soft);
+  color: var(--color-ink);
+}
+
+*::selection {
+  background-color: var(--color-accent-soft);
+  color: var(--color-ink);
+}
+
+@layer base {
+  a {
+    color: var(--color-accent);
+  }
+
+  select {
+    accent-color: var(--color-accent);
+  }
+
+  /* Override default blue focus rings on all form elements */
+  select:focus,
+  select:focus-visible,
+  input:focus,
+  input:focus-visible,
+  textarea:focus,
+  textarea:focus-visible {
+    border-color: var(--color-accent) !important;
+    --tw-ring-color: rgba(47, 109, 83, 0.4) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(47, 109, 83, 0.2) !important;
+  }
+
+  /* Override the accent-color (controls scrollbars, checkboxes, selects) */
+  * {
+    accent-color: var(--color-accent);
+  }
+}
+
+/* ============================================================
+   Mobile: prevent iOS Safari auto-zoom on input focus.
+   iOS zooms any input with font-size < 16px, which shifts the
+   page layout and makes nav buttons unresponsive.
+   ============================================================ */
+@media screen and (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* ============================================================
+   Touch targets: ensure interactive elements are at least
+   44x44px on mobile (Apple HIG recommendation)
+   ============================================================ */
+@media screen and (max-width: 768px) {
+  button,
+  [role="button"] {
+    min-height: 44px;
+  }
+}
+
+/* ============================================================
+   Custom Scrollbar
+   ============================================================ */
+.admin-nav-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-nav-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-nav-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-accent);
+  border-radius: 10px;
+}
+
+.admin-nav-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) transparent;
+}
