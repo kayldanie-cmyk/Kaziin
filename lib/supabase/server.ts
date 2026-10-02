@@ -8,16 +8,13 @@ import { cookies } from "next/headers";
 
 export async function createClient() {
   const cookieStore = await cookies();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  
+  // Provide fallback dummy values to prevent crash during Next.js static generation 
+  // if environment variables are not loaded in the build environment.
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://dummy-url.supabase.co";
   const supabaseKey =
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseKey) {
-    // Return null gracefully so pages can render without auth
-    // rather than crashing with a 404/500 on Vercel when vars are absent.
-    return null;
-  }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "dummy-key";
 
   return createServerClient(
     supabaseUrl,

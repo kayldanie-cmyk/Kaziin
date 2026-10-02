@@ -13,18 +13,16 @@ export async function QuickTaskBanner() {
   let user = null;
   let role: string | null = null;
 
-  if (supabase) {
-    const { data: { user: authUser } } = await supabase.auth.getUser();
-    user = authUser;
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+  user = authUser;
 
-    if (user) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .maybeSingle();
-      role = profile?.role ?? (user.user_metadata?.role as string) ?? "candidate";
-    }
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+    role = profile?.role ?? (user.user_metadata?.role as string) ?? "candidate";
   }
 
   // Deep-link authenticated users directly into their dashboard.
