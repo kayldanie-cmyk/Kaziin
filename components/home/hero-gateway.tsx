@@ -85,17 +85,17 @@ export function HeroGateway() {
         </p>
       </div>
 
-      {/* ── Three Portals Grid ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      {/* ── Three Portals Grid — stacked on mobile, 3-col on md+ ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
         {PORTALS.map((portal) => (
           <Link
             key={portal.key}
             href={portal.href}
-            className="group flex flex-col justify-between rounded-[16px] bg-transparent p-5 sm:p-7 hover:bg-black/[0.02] transition-all duration-200 no-underline"
+            className="group flex flex-col justify-between rounded-[16px] bg-transparent p-5 md:p-7 hover:bg-black/[0.02] transition-all duration-200 no-underline border border-line/40"
           >
             {/* Top info */}
             <div>
-              <h2 className="font-display font-bold text-[22px] sm:text-[24px] text-accent mt-2 leading-tight">
+              <h2 className="font-display font-bold text-[22px] text-accent mt-2 leading-tight">
                 {portal.title}
               </h2>
               <p className="text-[14px] text-ink-soft mt-2.5 leading-relaxed">
@@ -136,7 +136,10 @@ export function HeroGateway() {
 
       {/* Global CTA & Login */}
       <div className="mt-12 flex flex-col items-center justify-center gap-5">
-        <Link href="/auth/signup" className="inline-flex items-center justify-center px-10 py-3.5 rounded-full bg-[#2F6D53] text-white font-bold text-[15.5px] hover:bg-[#1E4D39] transition-colors">
+        <Link
+          href="/auth/signup"
+          className="inline-flex items-center justify-center px-10 py-3.5 rounded-full border-2 border-[#2F6D53] text-[#2F6D53] font-bold text-[15.5px] hover:bg-[#2F6D53] hover:text-white transition-colors"
+        >
           Get Started
         </Link>
         <div className="text-center text-[14px] text-ink-soft">
@@ -153,7 +156,7 @@ export function HeroGateway() {
   );
 }
 
-/* ── Mini visuals inside each portal ─────────────────────── */
+/* ── Mini visuals inside each portal ────────────────────────────── */
 
 function PortalVisual({ type }: { type: PathKey }) {
   if (type === "work") {
