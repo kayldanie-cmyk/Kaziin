@@ -47,7 +47,7 @@ export default async function HireCompanyPage() {
             Manage how your company appears to candidates across Kaziin.
           </p>
         </div>
-        <button className={buttonVariants({ variant: "outline" })}>
+        <button className={buttonVariants({ variant: "ghost" })}>
           Edit Profile
         </button>
       </div>

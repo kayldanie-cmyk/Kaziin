@@ -30,7 +30,7 @@ export default async function CandidateDetailPage({
 
   // Fetch recent applications to this employer's jobs if viewing as recruiter
   const { data: { user } } = await supabase.auth.getUser();
-  let applications = [];
+  let applications: any[] = [];
   if (user) {
     const { data: profile } = await supabase.from("profiles").select("employer_id").eq("id", user.id).single();
     if (profile?.employer_id) {

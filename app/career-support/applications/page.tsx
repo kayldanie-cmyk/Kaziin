@@ -61,7 +61,7 @@ export default async function CareerSupportApplicationsPage() {
                 <h3 className="font-display font-semibold text-[16px] text-ink">Career Funding Application</h3>
                 <p className="text-[13.5px] text-ink-soft mt-1">Status: Under review</p>
               </div>
-              <Link href="/career-support/funding" className={buttonVariants({ variant: "outline", size: "sm" })}>
+              <Link href="/career-support/funding" className={buttonVariants({ variant: "ghost", size: "sm" })}>
                 View Details
               </Link>
             </div>
@@ -73,7 +73,7 @@ export default async function CareerSupportApplicationsPage() {
                 <h3 className="font-display font-semibold text-[16px] text-ink">Global Support Application</h3>
                 <p className="text-[13.5px] text-ink-soft mt-1">Status: Under review</p>
               </div>
-              <Link href="/career-support/applications" className={buttonVariants({ variant: "outline", size: "sm" })}>
+              <Link href="/career-support/applications" className={buttonVariants({ variant: "ghost", size: "sm" })}>
                 View Details
               </Link>
             </div>

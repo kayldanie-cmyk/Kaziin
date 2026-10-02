@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-function getSupabase() {
-  const cookieStore = cookies();
+async function getSupabase() {
+  const cookieStore = await cookies();
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
@@ -37,7 +37,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ section: string }> }
 ) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -60,7 +60,7 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ section: string }> }
 ) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -84,7 +84,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ section: string }> }
 ) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -111,7 +111,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ section: string }> }
 ) {
-  const supabase = getSupabase();
+  const supabase = await getSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
