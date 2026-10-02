@@ -64,8 +64,8 @@ export default async function AdminTrainingPage() {
         .select("id", { count: "exact", head: true }),
     ]);
 
-  const programs = (programsResult.data ?? []) as Program[];
-  const credentials = (credentialsResult.data ?? []) as Credential[];
+  const programs = (programsResult.data ?? []) as unknown as Program[];
+  const credentials = (credentialsResult.data ?? []) as unknown as Credential[];
   const providerCount = providersResult.count ?? 0;
   const enrollmentCount = enrollmentsCountResult.count ?? 0;
   const pendingCredentials = credentials.filter(

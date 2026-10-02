@@ -84,7 +84,7 @@ export function AssessmentSuccess({ careerGoal, name }: AssessmentSuccessProps) 
               <h4 className="font-semibold text-[14.5px] text-[#2F6D53]">{step.title}</h4>
               <p className="text-[13.5px] text-ink-soft">{step.desc}</p>
             </div>
-            <Link href={step.href} className={buttonVariants({ variant: "outline", size: "sm" })}>
+            <Link href={step.href} className={buttonVariants({ variant: "ghost", size: "sm" })}>
               {step.action}
             </Link>
           </div>

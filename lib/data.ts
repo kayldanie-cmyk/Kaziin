@@ -226,12 +226,15 @@ export interface CandidateProfileMatchData {
   employment_types?: string[] | null;
 }
 
+export type { MatchedJob } from "@/lib/matching-engine";
+
 /**
  * Fetch published jobs and calculate match scores using the new AI Matching Engine.
  */
 export async function getMatchedJobs(profile: CandidateProfileMatchData | null) {
   const jobs = await getJobs();
   const { calculateMatch } = await import("@/lib/matching-engine");
+
   
   return jobs
     .map(job => calculateMatch(job, profile))

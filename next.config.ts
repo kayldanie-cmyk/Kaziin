@@ -11,8 +11,8 @@ const requiredEnvVars = [
 
 for (const key of requiredEnvVars) {
   if (!process.env[key]) {
-    throw new Error(
-      `\n❌ Missing required environment variable: ${key}\n` +
+    console.warn(
+      `\n⚠️  Missing environment variable: ${key}\n` +
         `   Copy .env.example → .env.local and fill in your values.\n` +
         `   In Vercel, add it under Project Settings → Environment Variables.\n`
     );

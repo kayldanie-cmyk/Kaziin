@@ -9,10 +9,16 @@ export async function middleware(request: NextRequest) {
   // Build a mutable response that we will return
   let response = NextResponse.next({ request });
 
-  const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey  =
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+
+  // If Supabase is not configured (missing env vars), pass all requests through
+  // rather than crashing and causing 404s on every page.
+  if (!supabaseUrl || !supabaseKey) {
+    return response;
+  }
 
   const supabase = createServerClient(supabaseUrl, supabaseKey, {
     cookies: {

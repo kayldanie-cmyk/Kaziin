@@ -88,7 +88,7 @@ export default async function TrainingPage() {
       : Promise.resolve({ data: null }),
   ]);
 
-  const programs = (programsResult.data ?? []) as TrainingProgram[];
+  const programs = (programsResult.data ?? []) as unknown as TrainingProgram[];
   const plan = planResult.data as CareerPlan | null;
   const enrollments = enrollmentsResult.data ?? [];
   const enrolledProgramIds = new Set(enrollments.map((e: { program_id: string }) => e.program_id));

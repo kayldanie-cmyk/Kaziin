@@ -9,18 +9,22 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function QuickTaskBanner() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
+  let user = null;
   let role: string | null = null;
-  if (user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
-    role = profile?.role ?? (user.user_metadata?.role as string) ?? "candidate";
+
+  if (supabase) {
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    user = authUser;
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+      role = profile?.role ?? (user.user_metadata?.role as string) ?? "candidate";
+    }
   }
 
   // Deep-link authenticated users directly into their dashboard.
@@ -111,4 +115,3 @@ export async function QuickTaskBanner() {
     </div>
   );
 }
-

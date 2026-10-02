@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 interface BadgeProps {
   children?: React.ReactNode;
-  variant?: "verified" | "status" | "info" | "warning" | "danger";
+  variant?: "verified" | "status" | "info" | "warning" | "danger" | "neutral";
   className?: string;
   icon?: boolean;
 }
@@ -18,6 +18,7 @@ const variantStyles: Record<string, string> = {
   info: "bg-accent-soft text-accent-dark",
   warning: "bg-amber-soft text-amber",
   danger: "bg-rejected-soft text-rejected",
+  neutral: "bg-paper text-ink border border-line",
 };
 
 /* ── Component ───────────────────────────────────────────── */

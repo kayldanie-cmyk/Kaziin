@@ -4,6 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 // GET /api/career/paths
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
+  if (!supabase) {
+    return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
+  }
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -21,7 +24,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: targetError.message }, { status: 500 });
   }
 
-  const currentTargetRole = targets?.[0]?.role?.name || "Professional";
+  const roleData = targets?.[0]?.role as any;
+  const currentTargetRole = (Array.isArray(roleData) ? roleData[0]?.name : roleData?.name) || "Professional";
 
   // Simulate AI generated path based on current target
   const paths = [

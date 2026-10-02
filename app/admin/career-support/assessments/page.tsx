@@ -46,7 +46,7 @@ export default async function AdminAssessmentsPage() {
     .order("created_at", { ascending: false })
     .limit(50);
 
-  const assessments = (data ?? []) as Assessment[];
+  const assessments = (data ?? []) as unknown as Assessment[];
 
   // Quick goal breakdown
   const goalCounts: Record<string, number> = {};

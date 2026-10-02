@@ -14,7 +14,9 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error("Supabase public URL and key are required.");
+    // Return null gracefully so pages can render without auth
+    // rather than crashing with a 404/500 on Vercel when vars are absent.
+    return null;
   }
 
   return createServerClient(

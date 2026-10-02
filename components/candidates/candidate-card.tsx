@@ -87,7 +87,7 @@ export function CandidateCard({
           </span>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             {skills.slice(0, 3).map((skill) => (
-              <Badge key={skill} variant="neutral" size="sm">
+              <Badge key={skill} variant="neutral">
                 {skill}
               </Badge>
             ))}

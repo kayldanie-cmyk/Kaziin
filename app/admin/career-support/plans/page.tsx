@@ -46,7 +46,7 @@ export default async function AdminCareerPlansPage() {
     .order("updated_at", { ascending: false })
     .limit(50);
 
-  const plans = (data ?? []) as CareerPlan[];
+  const plans = (data ?? []) as unknown as CareerPlan[];
 
   const activePlans = plans.filter((p) => p.status === "active");
   const internationalPlans = plans.filter((p) => p.career_goal === "work_internationally");
