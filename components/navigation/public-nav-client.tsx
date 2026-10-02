@@ -85,7 +85,7 @@ export function PublicNavClient({ sessionUser }: { sessionUser: SessionUser | nu
           })}
         </nav>
 
-        {/* Auth buttons — always show in mobile menu */}
+        {/* Auth buttons */}
         <div className="flex flex-col gap-3">
           {sessionUser ? (
             <Link href={dashboardHref} className={buttonVariants({ className: "w-full justify-center py-4 text-[16px]" })} onClick={() => setMobileOpen(false)}>
@@ -138,12 +138,21 @@ export function PublicNavClient({ sessionUser }: { sessionUser: SessionUser | nu
             })}
           </nav>
 
-          {/* Desktop auth — only Dashboard when logged in; Login/Get Started live in the hero */}
+          {/* Desktop auth */}
           <div className="hidden lg:flex items-center gap-2">
-            {sessionUser && (
+            {sessionUser ? (
               <Link href={dashboardHref} className={buttonVariants()}>
                 Dashboard
               </Link>
+            ) : (
+              <>
+                <Link href="/auth/signin" className={buttonVariants({ variant: "ghost" })}>
+                  Log in
+                </Link>
+                <Link href="/auth/signup" className={buttonVariants()}>
+                  Get started
+                </Link>
+              </>
             )}
           </div>
 
