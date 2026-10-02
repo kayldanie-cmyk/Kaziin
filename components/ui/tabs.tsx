@@ -77,6 +77,8 @@ export function Tabs({
                   ? "bg-accent-soft text-accent-dark"
                   : "bg-paper text-muted-label"
               )}
+            >
+              {tab.count}
             </span>
           )}
         </button>
