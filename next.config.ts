@@ -1,5 +1,8 @@
 import type { NextConfig } from "next";
 
+// ── Build-time environment variable validation ────────────────────────────────
+// Fail the build immediately if any required server-side secret is missing.
+// (NEXT_PUBLIC_* vars are validated in the browser at runtime by the Supabase clients.)
 const requiredEnvVars = [
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
@@ -17,6 +20,7 @@ for (const key of requiredEnvVars) {
 }
 
 const nextConfig: NextConfig = {
+  // Disable the "X-Powered-By: Next.js" header so the tech stack isn't advertised
   poweredByHeader: false,
 };
 

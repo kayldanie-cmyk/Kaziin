@@ -21,8 +21,8 @@ A smarter way to connect people with opportunity — locally, remotely and acros
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/kayldanie-cmyk/Kaziin.git
-cd Kaziin
+git clone https://github.com/your-username/kaziin.git
+cd kaziin
 ```
 
 ### 2. Install dependencies
@@ -51,9 +51,64 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploying to Vercel
 
-1. Go to [vercel.com/new](https://vercel.com/new) and import this GitHub repo.
-2. Add all environment variables from `.env.example` in Vercel Project Settings → Environment Variables.
-3. Click Deploy.
+### Step 1 — Push to GitHub
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/your-username/kaziin.git
+git push -u origin main
+```
+
+### Step 2 — Import into Vercel
+
+1. Go to [vercel.com/new](https://vercel.com/new) and import your GitHub repo.
+2. Vercel auto-detects Next.js — leave build settings as default.
+
+### Step 3 — Add Environment Variables in Vercel
+
+In **Project Settings → Environment Variables**, add every variable from `.env.example`:
+
+| Variable | Where to find it |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase Dashboard → Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase Dashboard → Project Settings → API |
+| `DATABASE_URL` | Supabase Dashboard → Project Settings → Database → Transaction Pooler (port 6543) |
+| `DIRECT_URL` | Supabase Dashboard → Project Settings → Database → Direct connection (port 5432) |
+| `GOOGLE_CLIENT_ID` | [console.cloud.google.com](https://console.cloud.google.com) |
+| `GOOGLE_CLIENT_SECRET` | [console.cloud.google.com](https://console.cloud.google.com) |
+| `MPESA_CONSUMER_KEY` | [developer.safaricom.co.ke](https://developer.safaricom.co.ke) |
+| `MPESA_CONSUMER_SECRET` | Safaricom Developer Portal |
+| `MPESA_SHORTCODE` | Safaricom Developer Portal |
+| `MPESA_PASSKEY` | Safaricom Developer Portal (Lipa Na M-Pesa passkey) |
+| `MPESA_ENV` | `sandbox` or `production` |
+| `MPESA_CALLBACK_BASE_URL` | Your Vercel domain, e.g. `https://kaziin.vercel.app` |
+| `ADMIN_SECRET` | Generate with: `openssl rand -base64 32` |
+
+> ⚠️ **Never paste real secrets into code or commit `.env` / `.env.local`.** Those files are git-ignored for your protection.
+
+### Step 4 — Update Supabase Auth callback URLs
+
+In **Supabase Dashboard → Auth → URL Configuration**, add your Vercel domain:
+
+```
+Site URL:       https://kaziin.vercel.app
+Redirect URLs:  https://kaziin.vercel.app/**
+                http://localhost:3000/**
+```
+
+### Step 5 — Update Google OAuth redirect URI
+
+In **Google Cloud Console → Credentials → OAuth 2.0 Client**, add:
+
+```
+https://your-project-id.supabase.co/auth/v1/callback
+```
+
+### Step 6 — Deploy
+
+Click **Deploy** in Vercel. The build will fail with a clear error message if any required environment variable is missing.
 
 ---
 
@@ -76,6 +131,21 @@ kaziin/
 ├── .env.example      # ← template: copy to .env.local
 └── vercel.json       # Vercel deployment & security headers
 ```
+
+---
+
+## Security
+
+- All secrets are loaded exclusively from environment variables — **nothing is hardcoded**.
+- `.env` and `.env.local` are git-ignored and must never be committed.
+- Build fails fast at startup if a required env var is missing.
+- `vercel.json` enforces HTTP security headers on every response:
+  - `X-Frame-Options: DENY` (clickjacking protection)
+  - `X-Content-Type-Options: nosniff`
+  - `X-XSS-Protection: 1; mode=block`
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - API routes return `Cache-Control: no-store`
+- `X-Powered-By` header is disabled (tech-stack fingerprinting prevention).
 
 ---
 

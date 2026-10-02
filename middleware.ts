@@ -6,6 +6,7 @@ type AppRole = "candidate" | "global_candidate" | "recruiter" | "admin";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Build a mutable response that we will return
   let response = NextResponse.next({ request });
 
   const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -19,9 +20,11 @@ export async function middleware(request: NextRequest) {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
+        // Write cookies to the request first (so getAll returns them)
         cookiesToSet.forEach(({ name, value }) =>
           request.cookies.set(name, value)
         );
+        // Rebuild the response so it carries refreshed cookies to the browser
         response = NextResponse.next({ request });
         cookiesToSet.forEach(({ name, value, options }) =>
           response.cookies.set(name, value, options)
@@ -30,6 +33,7 @@ export async function middleware(request: NextRequest) {
     },
   });
 
+  // IMPORTANT: always call getUser() so the session is refreshed and cookies propagated
   const { data: { user } } = await supabase.auth.getUser();
 
   const isProtected = (
@@ -42,6 +46,7 @@ export async function middleware(request: NextRequest) {
   const isAdmin      = pathname.startsWith("/admin");
   const isAuthPage   = pathname.startsWith("/auth");
 
+  // ── Unauthenticated user hitting a protected page ─────────────────────────
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
     url.pathname = isAdmin ? "/auth/admin" : "/auth/signin";
@@ -52,20 +57,24 @@ export async function middleware(request: NextRequest) {
   if (user) {
     const role = await getProfileRole(supabase, user.id, user.user_metadata?.role);
 
+    // ── Recruiter → candidate portals ────────────────────────────────────────
     const isCandidatePortal =
       pathname.startsWith("/dashboard") || pathname.startsWith("/global-dashboard");
     if (isCandidatePortal && role === "recruiter") {
       return NextResponse.redirect(new URL("/hire", request.url));
     }
 
+    // ── Non-recruiter → /hire ─────────────────────────────────────────────────
     if (isRecruiter && role !== "recruiter" && role !== "admin") {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
+    // ── Non-admin → /admin ────────────────────────────────────────────────────
     if (isAdmin && role !== "admin") {
       return NextResponse.redirect(new URL(role === "recruiter" ? "/hire" : "/dashboard", request.url));
     }
 
+    // ── Authenticated user on an auth page → redirect to their dashboard ─────
     if (isAuthPage) {
       const nextParam = request.nextUrl.searchParams.get("next");
       const callbackParam = request.nextUrl.searchParams.get("callbackUrl");
@@ -80,6 +89,7 @@ export async function middleware(request: NextRequest) {
       }
 
       const redirect = NextResponse.redirect(new URL(dest, request.url));
+      // Carry the session cookies over to the redirect response
       response.cookies.getAll().forEach(({ name, value }) => {
         redirect.cookies.set(name, value);
       });
