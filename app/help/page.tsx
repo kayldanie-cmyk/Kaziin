@@ -42,7 +42,7 @@ export default function HelpPage() {
             <div className="flex gap-3 justify-center flex-wrap">
               <Link
                 href="/trust"
-                className="bg-ink text-paper-alt px-5 py-2.5 rounded-[7px] text-[14.5px] font-semibold hover:bg-accent-dark transition-colors"
+                className="bg-[#2F6D53] text-white px-5 py-2.5 rounded-[7px] text-[14.5px] font-semibold hover:bg-[#1E4D39] transition-colors"
               >
                 Trust & Safety
               </Link>

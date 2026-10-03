@@ -18,7 +18,7 @@ export default function SupportUsPage() {
             <span className="font-data text-[12px] text-accent-dark uppercase tracking-wider font-semibold">
               Partner with Kaziin
             </span>
-            <h1 className="font-display font-bold text-ink text-[36px] mt-2 mb-4">
+            <h1 className="font-display font-bold text-[#2F6D53] text-[36px] mt-2 mb-4">
               Help us eradicate unemployment.
             </h1>
             <p className="text-ink-soft text-[16px] leading-relaxed max-w-[580px] mx-auto">

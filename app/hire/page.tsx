@@ -120,9 +120,6 @@ export default async function HireDashboardPage() {
           <Link href="/hire/jobs/new" className={buttonVariants({ className: "min-w-[130px] whitespace-nowrap" })}>
             Post a job
           </Link>
-          <Link href="/quick-tasks/post" className="text-[13px] text-accent-dark font-medium hover:underline">
-            Need quick help? Post a task →
-          </Link>
         </div>
       </div>
 

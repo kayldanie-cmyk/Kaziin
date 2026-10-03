@@ -113,7 +113,7 @@ export default async function GlobalDashboardPage() {
           {[
             ["1", "Find a role", "Review the work, location, and employer requirements before deciding to proceed."],
             ["2", "Share preferences", "Record where you want to work and the practical support that may matter to you."],
-            ["3", "Get supported", "We are dedicated to eradicating unemployment. If you qualify, we are ready to support your career journey."],
+            ["3", "Get supported", "Join us make impact. If you qualify, we are ready to support your career journey."],
           ].map(([number, title, description], index) => (
             <div
               key={title}

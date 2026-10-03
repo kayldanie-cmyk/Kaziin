@@ -108,7 +108,7 @@ export default function HowItWorksPage() {
               </ul>
               <Link
                 href="/recruiters"
-                className={buttonVariants({ className: "bg-ink hover:bg-ink/80 text-white border-transparent" })}
+                className={buttonVariants({ className: "bg-[#2F6D53] hover:bg-[#1E4D39] text-white border-transparent" })}
               >
                 Start hiring
               </Link>
